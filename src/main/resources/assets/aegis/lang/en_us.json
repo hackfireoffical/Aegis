@@ -1,4 +1,9 @@
 {
   "block.aegis.radar": "Radar",
-  "item.aegis.missile": "Missile"
+  "item.aegis.missile": "Missile",
+  "entity.aegis.missile": "Missile",
+  "itemGroup.aegis": "Aegis",
+  "screen.aegis.radar": "AEGIS RADAR",
+  "message.aegis.lock": "Lock: %s",
+  "message.aegis.no_lock": "No lock - unguided"
 }
