@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "ammo=0,powered=false": {
+      "model": "aegis:block/launcher"
+    },
+    "ammo=0,powered=true": {
+      "model": "aegis:block/launcher"
+    },
+    "ammo=1,powered=false": {
+      "model": "aegis:block/launcher"
+    },
+    "ammo=1,powered=true": {
+      "model": "aegis:block/launcher"
+    },
+    "ammo=2,powered=false": {
+      "model": "aegis:block/launcher"
+    },
+    "ammo=2,powered=true": {
+      "model": "aegis:block/launcher"
+    },
+    "ammo=3,powered=false": {
+      "model": "aegis:block/launcher"
+    },
+    "ammo=3,powered=true": {
+      "model": "aegis:block/launcher"
+    },
+    "ammo=4,powered=false": {
+      "model": "aegis:block/launcher"
+    },
+    "ammo=4,powered=true": {
+      "model": "aegis:block/launcher"
+    }
+  }
+}

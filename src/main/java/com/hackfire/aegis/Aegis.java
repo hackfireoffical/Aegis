@@ -1,5 +1,6 @@
 package com.hackfire.aegis;
 
+import com.hackfire.aegis.block.LauncherBlock;
 import com.hackfire.aegis.block.RadarBlock;
 import com.hackfire.aegis.block.RadarBlockEntity;
 import com.hackfire.aegis.entity.MissileEntity;
@@ -40,6 +41,10 @@ public class Aegis {
             () -> new RadarBlock(BlockBehaviour.Properties.of()
                     .strength(3.0f).requiresCorrectToolForDrops().sound(SoundType.METAL)));
     public static final DeferredItem<BlockItem> RADAR_ITEM = ITEMS.registerSimpleBlockItem("radar", RADAR);
+    public static final DeferredBlock<LauncherBlock> LAUNCHER = BLOCKS.register("launcher",
+            () -> new LauncherBlock(BlockBehaviour.Properties.of()
+                    .strength(4.0f).requiresCorrectToolForDrops().sound(SoundType.METAL)));
+    public static final DeferredItem<BlockItem> LAUNCHER_ITEM = ITEMS.registerSimpleBlockItem("launcher", LAUNCHER);
     public static final DeferredItem<MissileItem> MISSILE = ITEMS.register("missile",
             () -> new MissileItem(new net.minecraft.world.item.Item.Properties().stacksTo(16)));
 
@@ -57,6 +62,7 @@ public class Aegis {
                     .icon(() -> MISSILE.get().getDefaultInstance())
                     .displayItems((params, output) -> {
                         output.accept(RADAR_ITEM.get());
+                        output.accept(LAUNCHER_ITEM.get());
                         output.accept(MISSILE.get());
                     }).build());
 

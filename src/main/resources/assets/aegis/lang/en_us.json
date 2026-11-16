@@ -5,5 +5,7 @@
   "itemGroup.aegis": "Aegis",
   "screen.aegis.radar": "AEGIS RADAR",
   "message.aegis.lock": "Lock: %s",
-  "message.aegis.no_lock": "No lock - unguided"
+  "message.aegis.no_lock": "No lock - unguided",
+  "block.aegis.launcher": "Missile Launcher",
+  "message.aegis.ammo": "Missiles loaded: %s/%s"
 }

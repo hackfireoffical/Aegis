@@ -32,6 +32,7 @@ public class RadarBlockEntity extends BlockEntity {
     public record Contact(float dx, float dy, float dz, int kind, String name) {}
 
     private List<Contact> contacts = new ArrayList<>();
+    private int signal;
 
     public RadarBlockEntity(BlockPos pos, BlockState state) {
         super(Aegis.RADAR_BE.get(), pos, state);
@@ -41,18 +42,30 @@ public class RadarBlockEntity extends BlockEntity {
         return contacts;
     }
 
+    /** Redstone output: 0 when no missile is tracked, 1-15 rising as the nearest missile gets closer. */
+    public int getSignal() {
+        return signal;
+    }
+
     public static void serverTick(Level level, BlockPos pos, BlockState state, RadarBlockEntity be) {
         if (level.getGameTime() % 5 != 0) return;
         Vec3 center = Vec3.atCenterOf(pos);
         AABB box = new AABB(pos).inflate(RANGE);
         List<Contact> found = new ArrayList<>();
+        double nearestMissile = Double.MAX_VALUE;
         for (Entity e : level.getEntities((Entity) null, box,
                 x -> x.isAlive() && (x instanceof LivingEntity || x instanceof MissileEntity))) {
             Vec3 d = e.getBoundingBox().getCenter().subtract(center);
             if (d.lengthSqr() > (double) RANGE * RANGE) continue;
             int kind = e instanceof MissileEntity ? KIND_MISSILE : e instanceof Player ? KIND_PLAYER : KIND_MOB;
+            if (kind == KIND_MISSILE) nearestMissile = Math.min(nearestMissile, Math.sqrt(d.lengthSqr()));
             found.add(new Contact((float) d.x, (float) d.y, (float) d.z, kind, e.getType().getDescription().getString()));
             if (found.size() >= 64) break;
+        }
+        int newSignal = nearestMissile == Double.MAX_VALUE ? 0 : Math.max(1, 15 - (int) (nearestMissile / RANGE * 15));
+        if (newSignal != be.signal) {
+            be.signal = newSignal;
+            level.updateNeighborsAt(pos, state.getBlock());
         }
         if (!found.equals(be.contacts)) {
             be.contacts = found;
