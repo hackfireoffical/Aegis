@@ -15,7 +15,7 @@ public final class ModRenderTypes extends RenderType {
 
     /** Exhaust plume: alpha-blended so it stays visible against a bright daytime sky. */
     public static final RenderType FLAME_PLUME = create("aegis_flame_plume",
-            DefaultVertexFormat.POSITION_COLOR_TEX, VertexFormat.Mode.QUADS, 1536, false, true,
+            DefaultVertexFormat.POSITION_TEX_COLOR, VertexFormat.Mode.QUADS, 1536, false, true,
             RenderType.CompositeState.builder()
                     .setShaderState(new RenderStateShard.ShaderStateShard(() -> ModShaders.flame))
                     .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
@@ -26,7 +26,7 @@ public final class ModRenderTypes extends RenderType {
 
     /** Glow halo: additive so it blooms at night. */
     public static final RenderType FLAME_GLOW = create("aegis_flame_glow",
-            DefaultVertexFormat.POSITION_COLOR_TEX, VertexFormat.Mode.QUADS, 1536, false, false,
+            DefaultVertexFormat.POSITION_TEX_COLOR, VertexFormat.Mode.QUADS, 1536, false, false,
             RenderType.CompositeState.builder()
                     .setShaderState(new RenderStateShard.ShaderStateShard(() -> ModShaders.flame))
                     .setTransparencyState(ADDITIVE_TRANSPARENCY)

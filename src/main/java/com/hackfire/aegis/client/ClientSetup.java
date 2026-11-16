@@ -28,7 +28,7 @@ public final class ClientSetup {
         try {
             ShaderInstance shader = new ShaderInstance(event.getResourceProvider(),
                     ResourceLocation.fromNamespaceAndPath(Aegis.MODID, "missile_flame"),
-                    DefaultVertexFormat.POSITION_COLOR_TEX);
+                    DefaultVertexFormat.POSITION_TEX_COLOR);
             event.registerShader(shader, instance -> ModShaders.flame = instance);
         } catch (Exception ex) {
             // Never crash the game over a cosmetic shader: the missile just renders without its plume.
