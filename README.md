@@ -10,6 +10,7 @@ Realistic missiles and radar for Minecraft (NeoForge 1.21.1, Java 21, mod id `ae
   turns, then burnout and ballistic fall. Explodes on impact, with a smoke and flame trail.
 - **Missile Launcher block**: load up to 4 missiles by right-clicking with them, fire with a redstone pulse. Aims at the nearest hostile mob within 64 blocks, otherwise fires straight up. Drops its missiles when broken.
 - **Radar redstone output**: strength 1-15 that rises as a tracked missile gets closer (0 when none); comparators read the contact count.
+- **3D missile** with a custom exhaust shader (`missile_flame`): animated plume plus a glow halo. It reads day/night from the world, so the glow is subtle in daylight and blooms at night (and underground, Nether, End).
 - Recipes for all items; creative tab "Aegis".
 
 ## Plan

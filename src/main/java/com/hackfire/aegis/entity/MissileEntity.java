@@ -11,7 +11,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -30,6 +33,9 @@ public class MissileEntity extends Entity implements ItemSupplier {
     private static final int FUEL_TICKS = 160;
     private static final int MAX_AGE = 600;
     private static final float POWER = 3.5f;
+
+    private static final EntityDataAccessor<Boolean> THRUSTING =
+            SynchedEntityData.defineId(MissileEntity.class, EntityDataSerializers.BOOLEAN);
 
     private UUID ownerId;
     private UUID targetId;
@@ -52,6 +58,22 @@ public class MissileEntity extends Entity implements ItemSupplier {
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        builder.define(THRUSTING, true);
+    }
+
+    /** True while the motor is burning (used by the client for the exhaust flame). */
+    public boolean isThrusting() {
+        return entityData.get(THRUSTING);
+    }
+
+    @Override
+    public boolean shouldRenderAtSqrDistance(double distance) {
+        return distance < 256.0 * 256.0;
+    }
+
+    @Override
+    public AABB getBoundingBoxForCulling() {
+        return getBoundingBox().inflate(2.5);
     }
 
     @Override
@@ -88,8 +110,8 @@ public class MissileEntity extends Entity implements ItemSupplier {
     }
 
     private void updateRotation() {
-        setYRot((float) (Mth.atan2(dir.x, dir.z) * 57.29577951308232));
-        setXRot((float) (Mth.atan2(dir.y, dir.horizontalDistance()) * 57.29577951308232));
+        setYRot((float) (-Mth.atan2(dir.x, dir.z) * 57.29577951308232));
+        setXRot((float) (-Mth.atan2(dir.y, dir.horizontalDistance()) * 57.29577951308232));
     }
 
     @Override
@@ -99,6 +121,9 @@ public class MissileEntity extends Entity implements ItemSupplier {
         ServerLevel sl = (ServerLevel) level();
         age++;
         boolean fueled = age <= FUEL_TICKS;
+        if (entityData.get(THRUSTING) != fueled) {
+            entityData.set(THRUSTING, fueled);
+        }
 
         Entity target = targetId == null ? null : sl.getEntity(targetId);
         if (target != null && !target.isAlive()) target = null;
